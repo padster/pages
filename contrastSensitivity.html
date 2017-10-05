@@ -8,11 +8,21 @@
   </style>
 </head>
 <body onload='run()'>
-  <canvas id='img'></canvas>
+  <canvas id='img' onclick='fullScreen()'></canvas>
   <script>
   var START_CONTRAST = 0.01; // Only go from 20% different to 0%
   var START_HZ = 1;
   var END_HZ = 30;
+
+  function fullScreen() {
+    var c = document.getElementById('img');
+    if(c.requestFullScreen)
+      c.requestFullScreen();
+    else if(c.webkitRequestFullScreen)
+      c.webkitRequestFullScreen();
+    else if(c.mozRequestFullScreen)
+      c.mozRequestFullScreen();
+  }
 
   function generateFirstLine(width) {
     var line = [];
@@ -41,7 +51,6 @@
         at += 4;
       }
     }
-    console.log(img);
     return img;
   }
 

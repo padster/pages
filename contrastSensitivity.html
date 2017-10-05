@@ -10,9 +10,9 @@
 <body onload='run()'>
   <canvas id='img' onclick='fullScreen()'></canvas>
   <script>
-  var START_CONTRAST = 0.01; // Only go from 20% different to 0%
-  var START_HZ = 1;
-  var END_HZ = 30;
+  var START_SCALE = 0.9;
+  var START_HZ = 0.5;
+  var END_HZ = 15;
 
   function fullScreen() {
     var c = document.getElementById('img');
@@ -40,10 +40,11 @@
     var firstLine = generateFirstLine(width);
     var at = 0;
     for (var row = 0; row < height; row++) {
-      var scale = (1 - (row / height)) * START_CONTRAST;
+      var scale = (1 - (row / height)) * START_SCALE;
+      var scale = Math.pow(scale, 4);
       for (var col = 0; col < width; col++) {
-        var grey = (firstLine[col] - 0.5) * scale + 0.5;
-        var pxl = (255 * grey) | 0;
+        var grey = (firstLine[col] / 2) * scale + 0.5;
+        var pxl = (255 * grey);
         img.data[at + 0] = pxl;
         img.data[at + 1] = pxl;
         img.data[at + 2] = pxl;

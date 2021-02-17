@@ -93,6 +93,10 @@ trueToGameMMR = function(trueMMR) {
   return (trueMMR * 20) + 100;
 }
 
+getN = function() {
+  return parseFloat(document.getElementById('n').value);
+}
+
 fixRanks = function() {
   rows = document.querySelectorAll('#pTable tr');
   for (var i = 0; i < rows.length; i++) {
@@ -112,7 +116,7 @@ weightedRank = function(useHighest, trueMMRs) {
       teamRank = Math.max(teamRank, trueMMRs[i]);
     }
   } else {
-    n = parseFloat(document.getElementById('n').value);
+    n = getN();
     sum = 0;
     for (i = 0; i < trueMMRs.length; i++) {
       sum += Math.pow(trueMMRs[i], n);
@@ -128,13 +132,15 @@ updateRank = function() {
   rows = document.querySelectorAll('#pTable tr');
 
   useHighest = false;
-  trueMMRs = []
+  trueMMRs = [];
+
+  isCompetitive = (getN() == 15);
 
   for (var i = 0; i < rows.length; i++) {
     cells = rows[i].querySelectorAll('td')
     gameMMR = cells[1].firstElementChild.value;
     trueMMR = parseFloat(cells[2].innerText);
-    if (gameMMR >= 1140) {
+    if (gameMMR >= 1140 && isCompetitive) {
       useHighest = true;
     }
     trueMMRs.push(trueMMR);
@@ -148,7 +154,7 @@ updateRank = function() {
 
   message = ''
   if (n == -1) {
-    message = `Using highest player rank as they're 1140 or above.`
+    message = `Using highest player rank as they're 1140 or above in competitive.`
   } else {
     message = `Using weighted norm with n=${n} norm for this playlist.`
   }
